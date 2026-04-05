@@ -18,17 +18,14 @@ interface Product {
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios.get(`${API_URL}/api/products`)
       .then((res) => {
         setProducts(res.data);
-        setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching products:", err);
-        setLoading(false);
       });
   }, []);
 
