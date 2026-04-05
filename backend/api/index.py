@@ -42,7 +42,7 @@ class LoginRequest(BaseModel):
 async def root():
     return {"message": "Welcome to TOYS STORE Supabase API"}
 
-@app.get("/api/products", response_model=List[Product])
+@app.get("/products", response_model=List[Product])
 async def get_products():
     try:
         response = supabase.table("toys").select("*").order("createdAt", desc=True).execute()
@@ -50,7 +50,7 @@ async def get_products():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/products", response_model=Product)
+@app.post("/products", response_model=Product)
 async def create_product(product: Product):
     try:
         data = product.dict()
@@ -63,7 +63,7 @@ async def create_product(product: Product):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.delete("/api/products/{product_id}")
+@app.delete("/products/{product_id}")
 async def delete_product(product_id: str):
     try:
         supabase.table("toys").delete().eq("id", product_id).execute()
@@ -71,7 +71,7 @@ async def delete_product(product_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/upload")
+@app.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
     try:
         file_ext = file.filename.split(".")[-1]
@@ -88,7 +88,7 @@ async def upload_image(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/login")
+@app.post("/login")
 async def login(req: LoginRequest):
     if req.username == "admin" and req.password == "password123":
         return {"success": True, "token": "mock-token-123"}

@@ -20,7 +20,7 @@ export default function Gallery() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${API_URL}/api/products`)
+    axios.get(`${API_URL}/products`)
       .then((res) => {
         setProducts(res.data);
         setLoading(false);

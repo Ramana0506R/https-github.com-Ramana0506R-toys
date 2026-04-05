@@ -20,7 +20,7 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    axios.get(`${API_URL}/api/products`)
+    axios.get(`${API_URL}/products`)
       .then((res) => {
         setProducts(res.data);
       })

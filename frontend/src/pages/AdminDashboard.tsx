@@ -27,7 +27,7 @@ export default function AdminDashboard() {
 
   const fetchProducts = useCallback(async () => {
     try {
-      const res = await axios.get(`${API_URL}/api/products`);
+      const res = await axios.get(`${API_URL}/products`);
       setProducts(res.data);
     } catch (err) {
       console.error("Error fetching products:", err);
@@ -57,7 +57,7 @@ export default function AdminDashboard() {
     formData.append("file", file);
 
     try {
-      const res = await axios.post(`${API_URL}/api/upload`, formData, {
+      const res = await axios.post(`${API_URL}/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setNewProduct((prev) => ({ ...prev, imageUrl: res.data.imageUrl }));
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
     }
 
     try {
-      await axios.post(`${API_URL}/api/products`, newProduct);
+      await axios.post(`${API_URL}/products`, newProduct);
       setNewProduct({ name: "", description: "", imageUrl: "", isNewArrival: false });
       setShowAddModal(false);
       fetchProducts();
@@ -89,7 +89,7 @@ export default function AdminDashboard() {
   const handleDeleteProduct = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this toy?")) {
       try {
-        await axios.delete(`${API_URL}/api/products/${id}`);
+        await axios.delete(`${API_URL}/products/${id}`);
         fetchProducts();
       } catch (err) {
         console.error("Error deleting product:", err);
