@@ -90,12 +90,15 @@ async def upload_image(file: UploadFile = File(...)):
 
 @app.post("/login")
 async def login(req: LoginRequest):
-    print(f"Login attempt for user: {req.username}")
-    admin_user = os.environ.get("ADMIN_USERNAME", "admin")
-    admin_pass = os.environ.get("ADMIN_PASSWORD", "password123")
+    # Strip any accidental whitespace from user input
+    username = req.username.strip()
+    password = req.password.strip()
     
-    if req.username == admin_user and req.password == admin_pass:
+    # Get credentials from environment or fallback
+    admin_user = os.environ.get("ADMIN_USERNAME", "admin").strip()
+    admin_pass = os.environ.get("ADMIN_PASSWORD", "password123").strip()
+    
+    if username == admin_user and password == admin_pass:
         return {"success": True, "token": "mock-token-123"}
     
-    print(f"Failed login attempt: Expected {admin_user}, got {req.username}")
     raise HTTPException(status_code=401, detail="Invalid username or password")
