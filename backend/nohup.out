@@ -1,0 +1,19 @@
+INFO:     Will watch for changes in these directories: ['/home/ramana/toys/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [10106] using StatReload
+INFO:     Started server process [10117]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:58768 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58768 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59786 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59786 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59784 - "OPTIONS /login HTTP/1.1" 200 OK
+Login attempt for user: admin
+INFO:     127.0.0.1:59800 - "POST /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59800 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59800 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49842 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49842 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49290 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49290 - "GET /products HTTP/1.1" 200 OK

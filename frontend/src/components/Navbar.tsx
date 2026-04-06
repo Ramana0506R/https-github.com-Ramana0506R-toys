@@ -1,15 +1,26 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Rocket, Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${scrolled ? "glass scrolled" : ""}`}>
       <div className="container nav-content">
-        <Link to="/" className="logo">
-          <Rocket className="logo-icon animate-float" size={32} />
+        <Link to="/" className="logo" onClick={() => setIsOpen(false)}>
+          <div className="logo-icon-wrapper animate-float">
+            <Rocket className="logo-icon" size={28} />
+          </div>
           <span>TOYS STORE</span>
         </Link>
 
@@ -18,7 +29,7 @@ export default function Navbar() {
           <Link to="/" className="nav-link">Home</Link>
           <Link to="/gallery" className="nav-link">Gallery</Link>
           <Link to="/contact" className="nav-link">Contact</Link>
-          <Link to="/admin/login" className="btn btn-secondary btn-sm">Admin</Link>
+          <Link to="/admin/login" className="btn btn-secondary btn-sm pulse-hover">Admin</Link>
         </div>
 
         {/* Mobile Toggle */}
@@ -28,23 +39,27 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <div className="mobile-menu">
-          <Link to="/" onClick={() => setIsOpen(false)}>Home</Link>
-          <Link to="/gallery" onClick={() => setIsOpen(false)}>Gallery</Link>
-          <Link to="/contact" onClick={() => setIsOpen(false)}>Contact</Link>
-          <Link to="/admin/login" className="btn btn-secondary" onClick={() => setIsOpen(false)}>Admin</Link>
-        </div>
-      )}
+      <div className={`mobile-menu ${isOpen ? "open" : ""}`}>
+        <Link to="/" onClick={() => setIsOpen(false)}>Home</Link>
+        <Link to="/gallery" onClick={() => setIsOpen(false)}>Gallery</Link>
+        <Link to="/contact" onClick={() => setIsOpen(false)}>Contact</Link>
+        <Link to="/admin/login" className="btn btn-secondary" onClick={() => setIsOpen(false)}>Admin Panel</Link>
+      </div>
 
       <style>{`
         .navbar {
-          background: #fff;
-          padding: 20px 0;
-          box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-          position: sticky;
+          background: transparent;
+          padding: 24px 0;
+          position: fixed;
           top: 0;
+          left: 0;
+          width: 100%;
           z-index: 1000;
+          transition: all 0.3s ease;
+        }
+        .navbar.scrolled {
+          padding: 16px 0;
+          box-shadow: 0 4px 30px rgba(0,0,0,0.05);
         }
         .nav-content {
           display: flex;
@@ -56,45 +71,77 @@ export default function Navbar() {
           align-items: center;
           gap: 12px;
           font-family: var(--font-heading);
-          font-size: 24px;
+          font-size: 26px;
           font-weight: 800;
           color: var(--secondary);
           letter-spacing: -0.5px;
         }
+        .logo-icon-wrapper {
+          background: var(--primary);
+          width: 44px;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 14px;
+          transform: rotate(-10deg);
+        }
         .logo-icon {
-          color: var(--accent);
+          color: #000;
         }
         .desktop-menu {
           display: none;
           align-items: center;
-          gap: 32px;
+          gap: 40px;
         }
         .nav-link {
           font-weight: 700;
           font-size: 16px;
-          color: #444;
+          color: var(--foreground);
           transition: 0.3s;
+          position: relative;
+        }
+        .nav-link::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 0;
+          height: 3px;
+          background: var(--primary);
+          border-radius: 10px;
+          transition: 0.3s;
+        }
+        .nav-link:hover::after {
+          width: 100%;
         }
         .nav-link:hover {
           color: var(--secondary);
         }
-        .btn-sm { padding: 8px 18px; font-size: 14px; }
-        .mobile-toggle { display: block; color: var(--foreground); }
+        .btn-sm { padding: 10px 24px; font-size: 14px; }
+        .mobile-toggle { display: block; color: var(--foreground); background: transparent; }
         
         .mobile-menu {
-          position: absolute;
-          top: 100%;
-          left: 0;
-          width: 100%;
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 80%;
+          max-width: 300px;
+          height: 100vh;
           background: #fff;
-          padding: 30px;
+          padding: 100px 40px;
           display: flex;
           flex-direction: column;
-          gap: 20px;
-          box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-          border-top: 1px solid #eee;
+          gap: 30px;
+          box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+          transition: 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+          z-index: 999;
         }
-        .mobile-menu a { font-weight: 700; font-size: 18px; }
+        .mobile-menu.open {
+          right: 0;
+        }
+        .mobile-menu a { font-weight: 800; font-size: 24px; color: var(--foreground); font-family: var(--font-heading); }
+        .mobile-menu .btn { margin-top: 20px; }
 
         @media (min-width: 768px) {
           .desktop-menu { display: flex; }
