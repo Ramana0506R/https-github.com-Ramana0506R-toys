@@ -38,11 +38,14 @@ class LoginRequest(BaseModel):
     username: str
     password: str
 
+# API Routes (Serving on both root and /api/ for Vercel redundancy)
 @app.get("/")
+@app.get("/api")
 async def root():
     return {"message": "Welcome to TOYS STORE Supabase API"}
 
-@app.get("/products", response_model=List[Product])
+@app.get("/products")
+@app.get("/api/products")
 async def get_products():
     try:
         response = supabase.table("toys").select("*").order("createdAt", desc=True).execute()
@@ -50,7 +53,8 @@ async def get_products():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/products", response_model=Product)
+@app.post("/products")
+@app.post("/api/products")
 async def create_product(product: Product):
     try:
         data = product.dict()
@@ -64,6 +68,7 @@ async def create_product(product: Product):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.delete("/products/{product_id}")
+@app.delete("/api/products/{product_id}")
 async def delete_product(product_id: str):
     try:
         supabase.table("toys").delete().eq("id", product_id).execute()
@@ -72,6 +77,7 @@ async def delete_product(product_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/upload")
+@app.post("/api/upload")
 async def upload_image(file: UploadFile = File(...)):
     try:
         file_ext = file.filename.split(".")[-1]
@@ -89,6 +95,7 @@ async def upload_image(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/login")
+@app.post("/api/login")
 async def login(req: LoginRequest):
     # Strip any accidental whitespace from user input
     username = req.username.strip()
