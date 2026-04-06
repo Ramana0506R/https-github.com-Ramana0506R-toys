@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
+import { Rocket, Menu, X, Share2, Check } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Rocket, Menu, X } from "lucide-react";
+import { copyToClipboard } from "../utils/clipboard";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,6 +31,19 @@ export default function Navbar() {
           <Link to="/" className="nav-link">Home</Link>
           <Link to="/gallery" className="nav-link">Gallery</Link>
           <Link to="/contact" className="nav-link">Contact</Link>
+          <button 
+            className={`nav-share-btn ${copied ? "active" : ""}`}
+            onClick={async () => {
+              const success = await copyToClipboard(window.location.origin);
+              if (success) {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              }
+            }}
+            title="Copy Store Link"
+          >
+            {copied ? <Check size={18} /> : <Share2 size={18} />}
+          </button>
           <Link to="/admin/login" className="btn btn-secondary btn-sm pulse-hover">Admin</Link>
         </div>
 
@@ -142,6 +157,28 @@ export default function Navbar() {
         }
         .mobile-menu a { font-weight: 800; font-size: 24px; color: var(--foreground); font-family: var(--font-heading); }
         .mobile-menu .btn { margin-top: 20px; }
+        
+        .nav-share-btn {
+          background: #f5f5f5;
+          color: var(--secondary);
+          width: 38px;
+          height: 38px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: 0.3s;
+          cursor: pointer;
+        }
+        .nav-share-btn:hover {
+          background: var(--primary);
+          color: #000;
+          transform: translateY(-2px) rotate(5deg);
+        }
+        .nav-share-btn.active {
+          background: var(--success);
+          color: #fff;
+        }
 
         @media (min-width: 768px) {
           .desktop-menu { display: flex; }

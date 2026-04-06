@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { MessageCircle, Copy, Check } from "lucide-react";
 import { useState } from "react";
+import { copyToClipboard } from "../utils/clipboard";
 
 interface ProductCardProps {
   name: string;
@@ -20,12 +21,14 @@ export default function ProductCard({ name, description, imageUrl, isNewArrival 
     window.open(whatsappUrl, "_blank");
   };
 
-  const handleCopyLink = (e: React.MouseEvent) => {
+  const handleCopyLink = async (e: React.MouseEvent) => {
     e.stopPropagation();
     const productLink = `${window.location.origin}/gallery?search=${encodeURIComponent(name)}`;
-    navigator.clipboard.writeText(productLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const success = await copyToClipboard(productLink);
+    if (success) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (

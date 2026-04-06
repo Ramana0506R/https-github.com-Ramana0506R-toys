@@ -1,7 +1,10 @@
-import { Rocket, MapPin, Phone, Mail, Share2, MessageCircle } from "lucide-react";
+import { Rocket, MapPin, Phone, Mail, Share2, MessageCircle, Check } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { copyToClipboard } from "../utils/clipboard";
 
 export default function Footer() {
+  const [copiedStore, setCopiedStore] = useState(false);
   return (
     <footer className="footer">
       <div className="container footer-grid">
@@ -17,7 +20,19 @@ export default function Footer() {
           </p>
           <div className="social-links">
                 <a href="tel:+919342318163" className="btn btn-secondary glass">Call Us</a>
-            <a href="#" className="social-icon"><Share2 size={20} /></a>
+                <button 
+                  className={`social-icon share-btn ${copiedStore ? "active" : ""}`} 
+                  onClick={async () => {
+                    const success = await copyToClipboard(window.location.origin);
+                    if (success) {
+                        setCopiedStore(true);
+                        setTimeout(() => setCopiedStore(false), 2000);
+                    }
+                  }}
+                  title="Copy Store Link"
+                >
+                  {copiedStore ? <Check size={18} /> : <Share2 size={18} />}
+                </button>
             <a href="#" className="social-icon"><MessageCircle size={20} /></a>
           </div>
         </div>

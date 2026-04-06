@@ -17,3 +17,11 @@ INFO:     127.0.0.1:49842 - "GET /products HTTP/1.1" 200 OK
 INFO:     127.0.0.1:49842 - "GET /products HTTP/1.1" 200 OK
 INFO:     127.0.0.1:49290 - "GET /products HTTP/1.1" 200 OK
 INFO:     127.0.0.1:49290 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41882 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41896 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41882 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41896 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38550 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38566 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38550 - "GET /products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38566 - "GET /products HTTP/1.1" 200 OK

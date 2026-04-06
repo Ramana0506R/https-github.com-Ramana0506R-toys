@@ -1,14 +1,17 @@
 import { motion } from "framer-motion";
 import { MapPin, Phone, Clock, Send, Copy, Check } from "lucide-react";
 import { useState } from "react";
+import { copyToClipboard } from "../utils/clipboard";
 
 export default function Contact() {
   const [copiedType, setCopiedType] = useState<string | null>(null);
 
-  const handleCopy = (text: string, type: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedType(type);
-    setTimeout(() => setCopiedType(null), 2000);
+  const handleCopy = async (text: string, type: string) => {
+    const success = await copyToClipboard(text);
+    if (success) {
+      setCopiedType(type);
+      setTimeout(() => setCopiedType(null), 2000);
+    }
   };
 
   return (
