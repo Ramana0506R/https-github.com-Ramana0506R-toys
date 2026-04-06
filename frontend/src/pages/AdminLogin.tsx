@@ -28,7 +28,9 @@ export default function AdminLogin() {
         setError("Invalid credentials");
       }
     } catch (err: any) {
-      setError(err.response?.data?.detail || "Something went wrong. Please try again.");
+      const status = err.response?.status;
+      const detail = err.response?.data?.detail;
+      setError(`${detail || "Network error or service down"} (Code: ${status || "Unknown"})`);
     } finally {
       setLoading(false);
     }
